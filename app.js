@@ -100,7 +100,7 @@ function registerDomains(ignore = false) {
       }
       else if (element.deleted) {
         console.log(element.subdomain + " deleted.");
-        if (element.registered) proxy.unregister(element.subdomain + domain);
+        if (element.registered) proxy.unregister(element.subdomain + "." + domain);
         element.remove();
       }
     });
