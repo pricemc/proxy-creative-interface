@@ -13,7 +13,7 @@ var indexRouter = require('./routes/index');
 
 var app = express();
 var proxy;
-var domain = "mattcprice.com";
+var domain = "the-allo.me";
 
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
