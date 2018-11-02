@@ -1,0 +1,35 @@
+﻿<h1>Hi {{vm.user.Name}}!</h1>
+<p>You're logged in!!</p>
+<h3>All registered domains:</h3>
+<table class="table">
+    <tr>
+        <th scope="col">Subdomain</th>
+        <th scope="col">Port</th>
+        <th scope="col">Deleted</th>
+    </tr>
+    <tr ng-repeat="domain in vm.domains">
+        <td>{{domain.subdomain}}</td>
+        <td>{{domain.port}}</td>
+        <td>{{domain.deleted}}</td>
+        <td><a ng-hide="domain.deletable" ng-click="vm.deleteDomain(domain._id)">Delete</a></td>
+    </tr>
+</table>
+
+<form name="form" ng-submit="vm.createDomain()" role="form">
+        <div class="form-group" ng-class="{ 'has-error': form.subdomain.$dirty && form.subdomain.$error.required }">
+            <label for="subdomain">Subdomain</label>
+            <input type="text" name="subdomain" id="subdomain" class="form-control" ng-model="vm.subdomain" required />
+            <span ng-show="form.subdomain.$dirty && form.subdomain.$error.required" class="help-block">Subdomain is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.port.$dirty && form.port.$error.required }">
+            <label for="port">Port</label>
+            <input type="number" name="port" id="port" class="form-control" ng-model="vm.port" required />
+            <span ng-show="form.port.$dirty && form.port.$error.required" class="help-block">Port is required</span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Submit</button>
+            <img ng-if="vm.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        </div>
+    </form>
+<p>&nbsp;</p>
+<p><a href="#!/login" class="btn btn-primary">Logout</a></p>
