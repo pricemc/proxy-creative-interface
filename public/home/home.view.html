@@ -8,7 +8,7 @@
         <th scope="col">Deleted</th>
     </tr>
     <tr ng-repeat="domain in vm.domains">
-        <td><a href="{{domain.subdomain}}.the-allo.me">{{domain.subdomain}}.the-allo.me</a></td>
+        <td><a href="http://{{domain.subdomain}}.the-allo.me">{{domain.subdomain}}.the-allo.me</a></td>
         <td>{{domain.port}}</td>
         <td>{{domain.deleted}}</td>
         <td><a ng-hide="!domain.deletable" ng-click="vm.deleteDomain(domain._id)">Delete</a></td>
