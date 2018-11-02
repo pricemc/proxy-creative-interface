@@ -59,18 +59,22 @@ app.use(function (err, req, res, next) {
 
 db.once('open', function () {
   Domain = require("./models/Domain");
-  new Domain({
-    subdomain: 'proxy',
-    port: 3000,
-    deleted: false,
-    deletable: false,
-    registered: false
-  }).save(function (err, domain) {
-    if (err)
-      res.json({ status: err });
-    else
-      res.json({ status: "success" });
-  })
+  Domain.find({ subdomain: 'proxy' }, function (err, domains) {
+    if (domains.length == 0) {
+      new Domain({
+        subdomain: 'proxy',
+        port: 3000,
+        deleted: false,
+        deletable: false,
+        registered: false
+      }).save(function (err, domain) {
+        if (err)
+          console.error(err);
+        else
+          console.log(domain);
+      })
+    }
+  });
   console.log("Connected to DB.");
   proxy = require('redbird')({ port: 80 });
   proxy.notFound(function (req, res) {
