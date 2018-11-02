@@ -47,7 +47,8 @@
             }
         });
         $http.get('/build', function(err, res) {
-            console.log(res);
+            $rootScope.build = res.build;
+            $rootScope.time = res.time;
         })
     }
 
