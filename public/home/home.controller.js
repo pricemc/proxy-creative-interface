@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['DomainService', 'UserService', '$rootScope'];
-    function HomeController(DomainService, UserService, $rootScope) {
+    HomeController.$inject = ['DomainService', 'UserService', '$rootScope', '$interval'];
+    function HomeController(DomainService, UserService, $rootScope, $interval) {
         var vm = this;
 
         vm.user = null;
@@ -22,6 +22,7 @@
             loadCurrentUser();
             loadAllUsers();
             loadAllDomains();
+            $interval(loadAllDomains, 5000);
         }
 
         function loadCurrentUser() {
