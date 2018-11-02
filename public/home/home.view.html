@@ -3,12 +3,12 @@
 <h3>All registered domains:</h3>
 <table class="table">
     <tr>
-        <th scope="col">Subdomain</th>
+        <th scope="col">Subdomain Link</th>
         <th scope="col">Port</th>
         <th scope="col">Deleted</th>
     </tr>
     <tr ng-repeat="domain in vm.domains">
-        <td>{{domain.subdomain}}</td>
+        <td><a href="{{domain.subdomain}}.the-allo.me">{{domain.subdomain}}.the-allo.me</a></td>
         <td>{{domain.port}}</td>
         <td>{{domain.deleted}}</td>
         <td><a ng-hide="!domain.deletable" ng-click="vm.deleteDomain(domain._id)">Delete</a></td>
