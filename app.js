@@ -59,6 +59,15 @@ app.use(function (err, req, res, next) {
 
 db.once('open', function () {
   Domain = require("./models/Domain");
+
+  console.log("Connected to DB.");
+  proxy = require('redbird')({ port: 80 });
+  proxy.notFound(function (req, res) {
+    // render the error page
+    res.status(400);
+    res.json({ status: 400, message: 'Not Found' });
+  });
+  console.log("Proxy Running.");
   Domain.find({ subdomain: 'proxy' }, function (err, domains) {
     if (domains.length == 0) {
       new Domain({
@@ -75,14 +84,6 @@ db.once('open', function () {
       })
     }
   });
-  console.log("Connected to DB.");
-  proxy = require('redbird')({ port: 80 });
-  proxy.notFound(function (req, res) {
-    // render the error page
-    res.status(400);
-    res.json({ status: 400, message: 'Not Found' });
-  });
-  console.log("Proxy Running.");
   registerDomains(ignore = true);
   setInterval(() => registerDomains(), 5000);
 });
