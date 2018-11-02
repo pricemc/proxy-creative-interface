@@ -18,12 +18,12 @@
 <form name="form" ng-submit="vm.createDomain()" role="form">
         <div class="form-group" ng-class="{ 'has-error': form.subdomain.$dirty && form.subdomain.$error.required }">
             <label for="subdomain">Subdomain</label>
-            <input type="text" name="subdomain" id="subdomain" class="form-control" ng-model="vm.subdomain" required />
+            <input type="text" name="subdomain" id="subdomain" class="form-control" ng-model="vm.subdomain" required placeholder="test"/>
             <span ng-show="form.subdomain.$dirty && form.subdomain.$error.required" class="help-block">Subdomain is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.port.$dirty && form.port.$error.required }">
             <label for="port">Port</label>
-            <input type="number" name="port" id="port" class="form-control" ng-model="vm.port" required />
+            <input type="number" name="port" id="port" class="form-control" ng-model="vm.port" required placeholder="3000"/>
             <span ng-show="form.port.$dirty && form.port.$error.required" class="help-block">Port is required</span>
         </div>
         <div class="form-actions">
