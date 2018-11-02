@@ -15,8 +15,24 @@
         vm.domains = [];
         vm.deleteDomain = deleteDomain;
         vm.createDomain = createDomain;
+        vm.reset = reset;
 
         initController();
+
+        function reset() {
+            DomainService.Create('deleteme', '3000')
+                .then(function () {
+                    loadAllDomains();
+                });
+            DomainService.Create('clickMeFirstThenDeleteMe', '8080')
+                .then(function () {
+                    loadAllDomains();
+                });
+            DomainService.Create('test', '3000')
+                .then(function () {
+                    loadAllDomains();
+                });
+        }
 
         function initController() {
             loadCurrentUser();
