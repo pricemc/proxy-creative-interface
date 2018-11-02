@@ -11,7 +11,7 @@
         <td>{{domain.subdomain}}</td>
         <td>{{domain.port}}</td>
         <td>{{domain.deleted}}</td>
-        <td><a ng-hide="domain.deletable" ng-click="vm.deleteDomain(domain._id)">Delete</a></td>
+        <td><a ng-hide="!domain.deletable" ng-click="vm.deleteDomain(domain._id)">Delete</a></td>
     </tr>
 </table>
 

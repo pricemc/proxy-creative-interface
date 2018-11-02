@@ -9,16 +9,12 @@ mongoose.connect('mongodb://localhost/proxy')
   .catch((err) => console.error(err));
 
 var db = mongoose.connection;
-var indexRouter = require('./routes/index')(db);
+var indexRouter = require('./routes/index');
 
 var app = express();
+var proxy;
+var domain = "mattcprice.com";
 
-
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-
-var proxy = require('redbird')({ port: 80 });
-var Domain = require("./models/Domain")(proxy);
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
 var git_rev;
@@ -28,6 +24,9 @@ var appRootFolder = function (dir, level) {
   var rootFolder = arr.join('\\');
   return rootFolder;
 }
+
+
+var Domain;
 
 
 app.use(logger('dev'));
@@ -40,9 +39,6 @@ app.use(require('express-session')({
   resave: false,
   saveUninitialized: false
 }));
-app.use(passport.initialize());
-app.use(passport.session());
-
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
@@ -61,26 +57,37 @@ app.use(function (err, req, res, next) {
   res.json({ status: err.status, message: err.message });
 });
 
-// db.once('open', function () {
-//   console.log("Connected to DB.");
-//   console.log("Proxy Running.");
+db.once('open', function () {
+  Domain = require("./models/Domain");
+  console.log("Connected to DB.");
+  proxy = require('redbird')({ port: 80 });
+  console.log("Proxy Running.");
+  setInterval(() => registerDomains(), 5000);
+});
 
-//   Domain.find(function (err, proxies) {
-//     if (err) return console.error(err);
-//     proxies.forEach(async element => {
-//       console.log(element.subdomain + " registered.");
-//       if (!element.deleted) element.register();
-//     });
-//   })
+require('child_process').exec('git rev-parse --short HEAD', function (err, stdout) {
+  git_rev = stdout;
+  console.log('Last commit hash on this branch is: ', stdout);
+});
 
-// });
-
-// require('child_process').exec('git rev-parse --short HEAD', { cwd: appRootFolder(__dirname, 1) }, function (err, stdout) {
-//   git_rev = stdout;
-//   console.log('Last commit hash on this branch is: ', stdout);
-// });
-
-
+function registerDomains() {
+  Domain.find(function (err, domains) {
+    if (err) return console.error(err);
+    domains.forEach(async element => {
+      console.log(element.subdomain + " registered.");
+      console.log(element);
+      if (!element.deleted && !element.registered){
+        proxy.register(element.subdomain + "." + domain, "http://localhost:" + element.port);
+        element.registered = true;
+        element.save();
+      }
+      else if (element.deleted) {
+        if(element.registered) proxy.unregister(element.subdomain + domain);
+        Domain.findByIdAndDelete(element._id);
+      }
+    });
+  })
+}
 
 
 module.exports = app;
