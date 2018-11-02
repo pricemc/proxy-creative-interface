@@ -46,10 +46,7 @@
                 $location.path('/login');
             }
         });
-        $http.get('/build', function(err, res) {
-            $rootScope.build = res.build;
-            $rootScope.time = res.time;
-        })
+        
     }
 
 })();

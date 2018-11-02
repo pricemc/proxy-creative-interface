@@ -1,5 +1,7 @@
 ﻿<h1>Hi {{vm.user.Name}}!</h1>
-<p>You're logged in!!</p>
+<p>You're logged in!! Hit this <button type="submit" ng-click="vm.reset()" class="btn btn-primary">Reset</button> button to put more links up.</p>
+<p>This is a reverse proxy interface that allows users to set a subdomain to forward to a certain port, without having to change the port in the browser. <br>
+Try testing some different subdomains, and some that are listed below. Feel free to add or delete them while testing but please press reset before you leave!</p>
 <h3>All registered domains:</h3>
 <table class="table">
     <tr>
@@ -34,6 +36,6 @@
     </div>
 </form>
 
-<button type="submit" ng-click="vm.reset()" class="btn btn-primary">Reset</button>
+
 <p>&nbsp;</p>
 <p><a href="#!/login" class="btn btn-primary">Logout</a></p>
