@@ -68,7 +68,7 @@ db.once('open', function () {
     res.json({ status: 400, message: 'Not Found' });
   });
   console.log("Proxy Running.");
-  Domain.find({ subdomain: 'proxy' }, function (err, domains) {
+  Domain.find({ subdomain: 'proxy', port: 3000 }, function (err, domains) {
     if (domains.length == 0) {
       new Domain({
         subdomain: 'proxy',
@@ -88,10 +88,10 @@ db.once('open', function () {
   setInterval(() => registerDomains(), 5000);
 });
 
-require('child_process').exec('git rev-parse --short HEAD', function (err, stdout) {
-  git_rev = stdout;
-  console.log('Last commit hash on this branch is: ', stdout);
-});
+// require('child_process').exec('git rev-parse --short HEAD', function (err, stdout) {
+//   git_rev = stdout;
+//   console.log('Last commit hash on this branch is: ', stdout);
+// });
 
 function registerDomains(ignore = false) {
   Domain.find(function (err, domains) {
