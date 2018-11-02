@@ -64,8 +64,7 @@ db.once('open', function () {
   proxy = require('redbird')({ port: 80 });
   proxy.notFound(function (req, res) {
     // render the error page
-    res.status(400);
-    res.json({ status: 400, message: 'Not Found' });
+    res.json({ status: 404, message: 'Not Found' });
   });
   console.log("Proxy Running.");
   Domain.find({ subdomain: 'proxy', port: 3000 }, function (err, domains) {
