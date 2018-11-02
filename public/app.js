@@ -46,6 +46,9 @@
                 $location.path('/login');
             }
         });
+        $http.get('/build', function(err, res) {
+            console.log(res);
+        })
     }
 
 })();

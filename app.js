@@ -18,6 +18,7 @@ var domain = "the-allo.me";
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
 var git_rev;
+var git_time;
 var appRootFolder = function (dir, level) {
   var arr = dir.split('\\');
   arr.splice(arr.length - level, level);
@@ -40,6 +41,9 @@ app.use(require('express-session')({
   saveUninitialized: false
 }));
 app.use('/', indexRouter);
+app.get('/build', function(req, res) {
+  res.json({build: git_rev,time: git_time});
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -83,10 +87,14 @@ db.once('open', function () {
   setInterval(() => registerDomains(), 5000);
 });
 
-// require('child_process').exec('git rev-parse --short HEAD', function (err, stdout) {
-//   git_rev = stdout;
-//   console.log('Last commit hash on this branch is: ', stdout);
-// });
+require('child_process').exec('git rev-parse --short HEAD', function (err, stdout) {
+  git_rev = stdout;
+  console.log('Last commit hash on this branch is: ', stdout);
+});
+require('child_process').exec('git log -1 --format=%cd --date=local', function (err, stdout) {
+  git_time = stdout;
+  console.log('Last commit on this branch was: ', stdout);
+});
 
 function registerDomains(ignore = false) {
   Domain.find(function (err, domains) {
