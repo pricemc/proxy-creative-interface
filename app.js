@@ -61,6 +61,11 @@ db.once('open', function () {
   Domain = require("./models/Domain");
   console.log("Connected to DB.");
   proxy = require('redbird')({ port: 80 });
+  proxy.notFound(function (req, res) {
+    // render the error page
+    res.status(400);
+    res.json({ status: 400, message: 'Not Found' });
+  });
   console.log("Proxy Running.");
   registerDomains(ignore = true);
   setInterval(() => registerDomains(), 5000);
@@ -71,11 +76,11 @@ require('child_process').exec('git rev-parse --short HEAD', function (err, stdou
   console.log('Last commit hash on this branch is: ', stdout);
 });
 
-function registerDomains(ignore=false) {
+function registerDomains(ignore = false) {
   Domain.find(function (err, domains) {
     if (err) return console.error(err);
     domains.forEach(async element => {
-      if (!element.deleted && (ignore || !element.registered)){
+      if (!element.deleted && (ignore || !element.registered)) {
         proxy.register(element.subdomain + "." + domain, "http://localhost:" + element.port);
         element.registered = true;
         element.save();
@@ -83,7 +88,7 @@ function registerDomains(ignore=false) {
       }
       else if (element.deleted) {
         console.log(element.subdomain + " deleted.");
-        if(element.registered) proxy.unregister(element.subdomain + domain);
+        if (element.registered) proxy.unregister(element.subdomain + domain);
         element.remove();
       }
     });
