@@ -47,8 +47,8 @@
             }
         });
         $http.get('/build', function(err, res) {
-            $rootScope.build = res.build;
-            $rootScope.time = res.time;
+            $rootScope.globals.build = res.build;
+            $rootScope.globals.time = res.time;
         })
     }
 
